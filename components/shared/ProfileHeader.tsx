@@ -1,4 +1,7 @@
+// import { clerkClient } from "@clerk/nextjs";
+// import { OrganizationMembership } from "@clerk/nextjs/server";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   accountId: string;
@@ -7,9 +10,21 @@ interface Props {
   username: string;
   imgUrl: string; 
   bio: string;
+  type?: 'User' | 'Community';
 }
 
-const ProfileHeader = ({accountId, authUserId, name, username, imgUrl, bio }: Props) => {
+
+
+const ProfileHeader = ({accountId, authUserId, name, username, imgUrl, bio, type }: Props) => {
+  // let organization: OrganizationMembership[] = [];
+  // if (type === 'Community') {
+  //   organization = await clerkClient.organizations.getOrganizationMembershipList({ organizationId: accountId });
+  // }
+
+  // const isAdmin = (userId: string) => {
+  //   return organization.find((membership) => membership.publicUserData?.userId === userId && membership.role === 'admin') ? true : false;
+  // }
+
   return (
     <div className="flex w-full flex-col justify-start">
       <div className="flex items-center justify-between">
@@ -23,6 +38,14 @@ const ProfileHeader = ({accountId, authUserId, name, username, imgUrl, bio }: Pr
             <p className="text-base-medium text-gray-1">@{username}</p>
           </div>
         </div>
+        {accountId === authUserId && type !== 'Community' && (
+          <Link href="/profile/edit">
+            <div className="flex gap-3 bg-dark-3 rounded-lg py-2 px-4">
+              <Image src="/assets/edit.svg" alt="edit" width={16} height={16} />
+              <p className="text-light-2">Edit</p>
+            </div>
+          </Link>
+        )}
       </div>
       
       {/* TODO: Community */}
